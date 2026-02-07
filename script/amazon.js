@@ -1,11 +1,12 @@
 // import { cart as myCart} from "../data/cart.js";
-import { cart } from "../data/cart.js";
-import { products } from "../data/products.js
+import { addtocart, cart } from "../data/cart.js";
+import { products } from "../data/products.js";
+
 let productListHTML = "";
 products.forEach((product) => {
   productListHTML += `
         <div class="product-container">
-            <div class="product-image-container">
+            <div class="producd-image-container">
             <img class="product-image" src="${product.image}">
             </div>
 
@@ -38,54 +39,34 @@ products.forEach((product) => {
                 <option value="10">10</option>
             </select>
             </div>
-
             <div class="product-spacer"></div>
-
             <div class="added-to-cart">
             <img src="images/icons/checkmark.png">
             Added
             </div>
-
             <button class="add-to-cart-button button-primary js-add-to-card" data-product-id="${product.id}">
             Add to Cart
             </button>
         </div>
     `;
 });
+document.querySelector(".js-product-grid").innerHTML = productListHTML;
 
-const print_product_grid = document.querySelector(".js-product-grid");
-print_product_grid.innerHTML = productListHTML;
+//-------------------------------------
+//     fungsi hitung jumlah barang
+//-------------------------------------
+const countCART = () => {
+  let totalCartQuantity = 0;
+  cart.forEach((cartItem) => {
+    totalCartQuantity = cartItem.quantity;
+  });
+  document.querySelector(".js-cart-quantity").innerHTML = totalCartQuantity;
+};
 
-const button_add_to_cart = document.querySelectorAll(".js-add-to-card");
-
-button_add_to_cart.forEach((button) => {
+document.querySelectorAll(".js-add-to-card").forEach((button) => {
   button.addEventListener("click", () => {
-    const product_id = button.dataset.productId;
-
-    // cari nilai id yang sama
-    let matchingItem;
-    cart.forEach((item) => {
-      if (product_id === item.productId) {
-        matchingItem = item;
-      }
-    });
-    // kondisi jika sama id quantity bertambah 1
-    if (matchingItem) {
-      matchingItem.quantity += 1;
-    } else {
-      matchingItem = {
-        productId: product_id,
-        quantity: 1,
-      };
-      cart.push(matchingItem);
-    }
-
-    let totalCartQuantity = 0;
-
-    cart.forEach((i) => {
-      totalCartQuantity = i.quantity;
-    });
-
-    document.querySelector(".js-cart-quantity").innerHTML = totalCartQuantity;
+    const addValueID = button.dataset.productId;
+    addtocart(addValueID);
+    countCART();
   });
 });
