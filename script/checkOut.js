@@ -1,4 +1,4 @@
-import { cart, removeFromCart } from "../data/cart.js";
+import { countingQuantity, cart, removeFromCart } from "../data/cart.js";
 import { products } from "../data/products.js";
 import { formatCurrency } from "./utils/money.js";
 
@@ -90,7 +90,11 @@ document.querySelectorAll(".js-delete-quantity-link").forEach((buttonDeleteProdu
   buttonDeleteProduct.addEventListener("click", () => {
     const produckCheckOut = buttonDeleteProduct.dataset.idCheckout;
     removeFromCart(produckCheckOut);
-
     document.querySelector(`.js-cart-item-container-${produckCheckOut}`).remove();
+    countingQuantity("js-count-item"," Items");
   });
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  countingQuantity("js-count-item"," Items");
 });

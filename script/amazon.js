@@ -1,5 +1,5 @@
 // import { cart as myCart} from "../data/cart.js";
-import { addtocart, cart } from "../data/cart.js";
+import { countingQuantity, addtocart, cart } from "../data/cart.js";
 import { products } from "../data/products.js";
 import { formatCurrency } from "./utils/money.js";
 
@@ -27,7 +27,7 @@ products.forEach((product) => {
             </div>
 
             <div class="product-quantity-container">
-            <select>
+            <select class="js-product-quantity-container">
                 <option selected value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -56,16 +56,19 @@ document.querySelector(".js-product-grid").innerHTML = productListHTML;
 //-------------------------------------
 //     fungsi hitung jumlah barang
 //-------------------------------------
-const countCART = () => {
-  let totalCartQuantity = 0;
-  totalCartQuantity += cart.length;
-  document.querySelector(".js-cart-quantity").innerHTML = totalCartQuantity;
-};
 
 document.querySelectorAll(".js-add-to-card").forEach((button) => {
   button.addEventListener("click", () => {
     const addValueID = button.dataset.productId;
-    addtocart(addValueID);
-    countCART();
+    const header = button.closest(".product-container");
+    const select = header.querySelector(".js-product-quantity-container");
+    const quantity = Number(select.value);
+    addtocart(addValueID, quantity);
+    countingQuantity("js-cart-quantity", null);
   });
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  let productQuantity = JSON.parse(localStorage.getItem("countProduct"));
+  productQuantity === 0 ? "" : countingQuantity("js-cart-quantity", null);
 });

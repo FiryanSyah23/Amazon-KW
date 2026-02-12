@@ -23,21 +23,19 @@ function saveToStorage() {
 //------------------------------------------
 // fungsi menabahkan objek pada cart array
 //------------------------------------------
-export const addtocart = (product_id) => {
-  // cari nilai id yang sama
+export const addtocart = (product_id, quantity) => {
   let matchingItem;
   cart.forEach((cartItem) => {
     if (product_id === cartItem.productID) {
       matchingItem = cartItem;
     }
   });
-  // kondisi jika sama id quantity bertambah 1
   if (matchingItem) {
-    matchingItem.quantity += 1;
+    matchingItem.quantity += quantity;
   } else {
     matchingItem = {
       productID: product_id,
-      quantity: 1,
+      quantity: quantity,
     };
     cart.push(matchingItem);
   }
@@ -57,3 +55,12 @@ export const removeFromCart = (cardIDProduct) => {
   cart = newCart;
   saveToStorage();
 };
+
+export function countingQuantity(className, spesialText) {
+  let totalCartQuantity = 0;
+  totalCartQuantity = cart.reduce((total, item) => {
+    return total + item.quantity;
+  }, 0);
+  localStorage.setItem("countProduct", JSON.stringify(totalCartQuantity));
+  document.querySelector(`.${className}`).innerHTML = JSON.parse(localStorage.getItem("countProduct")) + spesialText;
+}
