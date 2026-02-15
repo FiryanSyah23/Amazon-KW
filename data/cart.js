@@ -69,22 +69,34 @@ export function changeStockQuantity(buttonUpdate) {
   const productId = buttonUpdate.dataset.quantityUpdate;
   const container = document.querySelector(`.js-cart-item-container-${productId}`);
   let input = container.querySelector(".input-update");
+  const numberQuantity = document.querySelector(".quantity-label");
+  // MODE UPDATE → BUAT INPUT
   if (buttonUpdate.textContent.trim() === "Update") {
     buttonUpdate.textContent = "Save";
-    if (!input) {
-      buttonUpdate.insertAdjacentHTML("beforebegin", `<input type="number" min="1" class="input-update" value="1">`);
+    const item = cart.find((item) => item.productID === productId);
+    if (item && !input) {
+      buttonUpdate.insertAdjacentHTML("beforebegin", `<input type="number" min="1" class="input-update" value="${item.quantity}">`);
+      input = container.querySelector(".input-update");
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          buttonUpdate.click();
+        }
+      });
+      input.focus();
+      numberQuantity.style.display = "none";
     }
   } else {
     const nilaiInput = Number(input.value);
-    cart.reduce((total, item) => {
+    cart.forEach((item) => {
       if (item.productID == productId) {
         item.quantity = nilaiInput;
       }
-      return total + item.quantity;
-    }, 0);
+    });
     saveToStorage();
     container.querySelector(".quantity-label").textContent = nilaiInput;
     input.remove();
     buttonUpdate.textContent = "Update";
+      numberQuantity.style.display = "inline";
+
   }
 }
