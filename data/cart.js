@@ -64,3 +64,27 @@ export function countingQuantity(className, spesialText) {
   localStorage.setItem("countProduct", JSON.stringify(totalCartQuantity));
   document.querySelector(`.${className}`).innerHTML = JSON.parse(localStorage.getItem("countProduct")) + spesialText;
 }
+
+export function changeStockQuantity(buttonUpdate) {
+  const productId = buttonUpdate.dataset.quantityUpdate;
+  const container = document.querySelector(`.js-cart-item-container-${productId}`);
+  let input = container.querySelector(".input-update");
+  if (buttonUpdate.textContent.trim() === "Update") {
+    buttonUpdate.textContent = "Save";
+    if (!input) {
+      buttonUpdate.insertAdjacentHTML("beforebegin", `<input type="number" min="1" class="input-update" value="1">`);
+    }
+  } else {
+    const nilaiInput = Number(input.value);
+    cart.reduce((total, item) => {
+      if (item.productID == productId) {
+        item.quantity = nilaiInput;
+      }
+      return total + item.quantity;
+    }, 0);
+    saveToStorage();
+    container.querySelector(".quantity-label").textContent = nilaiInput;
+    input.remove();
+    buttonUpdate.textContent = "Update";
+  }
+}
