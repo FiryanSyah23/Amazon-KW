@@ -1,5 +1,5 @@
 // import { cart as myCart} from "../data/cart.js";
-import { countingQuantity, addtocart, cart } from "../data/cart.js";
+import { countingQuantity, addtocart } from "../data/cart.js";
 import { products } from "../data/products.js";
 import { formatCurrency } from "./utils/money.js";
 
@@ -57,14 +57,18 @@ document.querySelector(".js-product-grid").innerHTML = productListHTML;
 //     fungsi hitung jumlah barang
 //-------------------------------------
 
-document.querySelectorAll(".js-add-to-card").forEach((button) => {
-  button.addEventListener("click", () => {
-    const addValueID = button.dataset.productId;
-    const header = button.closest(".product-container");
-    const select = header.querySelector(".js-product-quantity-container");
-    const quantity = Number(select.value);
-    addtocart(addValueID, quantity);
-    countingQuantity("js-cart-quantity", null);
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".js-add-to-card").forEach((button) => {
+    button.addEventListener("click", () => {
+      const addValueID = button.dataset.productId;
+      const header = button.closest(".product-container");
+      const select = header.querySelector(".js-product-quantity-container");
+      const quantity = Number(select.value);
+
+      addtocart(addValueID, quantity);
+      countingQuantity("js-cart-quantity", null);
+      location.reload();
+    });
   });
 });
 
