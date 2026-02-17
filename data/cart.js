@@ -44,9 +44,8 @@ export const addtocart = (product_id, quantity) => {
   saveToStorage();
 };
 
-//------------------------------------------
 // fungsi Menghapus objek pada cart array
-//------------------------------------------
+//-----------------------------------------
 export const removeFromCart = (cardIDProduct) => {
   const newCart = [];
   cart.forEach((cartItem) => {
@@ -58,6 +57,16 @@ export const removeFromCart = (cardIDProduct) => {
   cart = newCart;
   saveToStorage();
 };
+
+export function refrehUpdatedelivery(product_id, deliveryOptionID) {
+  const matchingItem1 = cart.find((item) => item.productID === product_id);
+  if (!matchingItem1) {
+    console.error("Product tidak ditemukan:", product_id);
+    return;
+  }
+  matchingItem1.deliveryOptionID = deliveryOptionID;
+  saveToStorage();
+}
 
 //------------------------------------------
 // fungsi Menghitung barang pada checkout
