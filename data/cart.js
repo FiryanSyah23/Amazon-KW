@@ -44,6 +44,7 @@ export const addtocart = (product_id, quantity) => {
   saveToStorage();
 };
 
+//------------------------------------------
 // fungsi Menghapus objek pada cart array
 //-----------------------------------------
 export const removeFromCart = (cardIDProduct) => {
@@ -58,6 +59,9 @@ export const removeFromCart = (cardIDProduct) => {
   saveToStorage();
 };
 
+//------------------------------------------------
+// fungsi Refres Page ChekcOut Barang interactive
+//------------------------------------------------
 export function refrehUpdatedelivery(product_id, deliveryOptionID) {
   const matchingItem1 = cart.find((item) => item.productID === product_id);
   if (!matchingItem1) {
