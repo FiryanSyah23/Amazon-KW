@@ -10,6 +10,7 @@ import localeID from "https://unpkg.com/dayjs@1.11.19/esm/locale/id.js";
 //------------------------------------------
 export function renderOrderSummary() {
 	dayjs.locale(localeID);
+
 	let cartSummaryHTML = "";
 	cart.forEach((cartItem) => {
 		const callproductid = cartItem.productID;
@@ -108,7 +109,8 @@ export function renderOrderSummary() {
 			const produckCheckOut = buttonDeleteProduct.dataset.idCheckout;
 			removeFromCart(produckCheckOut);
 			document.querySelector(`.js-cart-item-container-${produckCheckOut}`).remove();
-			countingQuantity("js-count-item", " Items");
+			const total = countingQuantity();
+			document.querySelector(".js-count-item").innerHTML = total + " items";
 		});
 	});
 
@@ -118,7 +120,8 @@ export function renderOrderSummary() {
 	document.querySelectorAll(".js-button-update").forEach((buttonUpdate) => {
 		buttonUpdate.addEventListener("click", () => {
 			changeStockQuantity(buttonUpdate);
-			countingQuantity("js-count-item", " Items");
+			const total = countingQuantity();
+			document.querySelector(".js-count-item").innerHTML = total + " items";
 		});
 	});
 
@@ -126,9 +129,13 @@ export function renderOrderSummary() {
 	//          Event Refres Page
 	//------------------------------------------
 	document.addEventListener("DOMContentLoaded", () => {
-		countingQuantity("js-count-item", " Items");
+		const total = countingQuantity();
+		document.querySelector(".js-count-item").innerHTML = total + " items";
 	});
 
+	//------------------------------------------
+	//          Tombol Update Delivery
+	//------------------------------------------
 	document.querySelectorAll(".js-delivery-option").forEach((element) => {
 		element.addEventListener("click", () => {
 			const productID = element.dataset.productId;

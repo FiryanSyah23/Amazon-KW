@@ -4,9 +4,10 @@ import { products } from "../data/products.js";
 import { formatCurrency } from "./utils/money.js";
 
 function orderAmazonPage() {
-  let productListHTML = "";
-  products.forEach((product) => {
-    productListHTML += `
+	let productListHTML = "";
+
+	products.forEach((product) => {
+		productListHTML += `
           <div class="product-container">
               <div class="producd-image-container">
               <img class="product-image" src="${product.image}">
@@ -51,30 +52,32 @@ function orderAmazonPage() {
               </button>
           </div>
       `;
-  });
-  document.querySelector(".js-product-grid").innerHTML = productListHTML;
+	});
+	document.querySelector(".js-product-grid").innerHTML = productListHTML;
 
-  //-------------------------------------
-  //     fungsi hitung jumlah barang
-  //-------------------------------------
+	//-------------------------------------
+	//     fungsi hitung jumlah barang
+	//-------------------------------------
 
-  document.querySelectorAll(".js-add-to-card").forEach((button) => {
-    button.addEventListener("click", () => {
-      const addValueID = button.dataset.productId;
-      const header = button.closest(".product-container");
-      const select = header.querySelector(".js-product-quantity-container");
-      const quantity = Number(select.value);
+	document.querySelectorAll(".js-add-to-card").forEach((button) => {
+		button.addEventListener("click", () => {
+			const addValueID = button.dataset.productId;
+			const header = button.closest(".product-container");
+			const select = header.querySelector(".js-product-quantity-container");
+			const quantity = Number(select.value);
 
-      addtocart(addValueID, quantity);
-      countingQuantity("js-cart-quantity", null);
-      orderAmazonPage();
-    });
-  });
+			addtocart(addValueID, quantity);
+			const total = countingQuantity();
+			document.querySelector(".js-cart-quantity").innerHTML = total;
+		});
+	});
 
-  document.addEventListener("DOMContentLoaded", () => {
-    let productQuantity = JSON.parse(localStorage.getItem("countProduct"));
-    productQuantity === 0 ? "" : countingQuantity("js-cart-quantity", null);
-  });
+	document.addEventListener("DOMContentLoaded", () => {
+		let productQuantity = JSON.parse(localStorage.getItem("countProduct"));
+		const total = countingQuantity();
+		productQuantity === 0 ? "" : (document.querySelector(".js-cart-quantity").innerHTML = total);
+		orderAmazonPage();
+	});
 }
 
 orderAmazonPage();
