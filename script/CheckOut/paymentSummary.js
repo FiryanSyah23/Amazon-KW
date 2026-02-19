@@ -1,14 +1,15 @@
-export function renderPaymentSummary() {
-	const getDataCountQuantity = localStorage.getItem("countProduct");
+import { cart, countingQuantity } from "../../data/cart.js";
 
+export function renderPaymentSummary() {
 	let paymentSummary = "";
+
 	paymentSummary += `
             <div class="payment-summary-title">
             Order Summary
             </div>
 
             <div class="payment-summary-row">
-            <div>Items (<span class="js-items-quantity"> </span>) :</div>
+            <div class="js-counting-quantity"> :</div>
             <div class="payment-summary-money">$42.75</div>
             </div>
 
@@ -37,8 +38,4 @@ export function renderPaymentSummary() {
             </button>
         `;
 	document.querySelector(".js-payment-summary").innerHTML = paymentSummary;
-	document.addEventListener("DOMContentLoaded", () => {
-		// const total = countingQuantity();
-		// document.querySelector(".js-count-item").innerHTML = total;
-	});
 }

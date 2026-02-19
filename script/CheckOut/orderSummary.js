@@ -15,14 +15,15 @@ export function renderOrderSummary() {
 	cart.forEach((cartItem) => {
 		const callproductid = cartItem.productID;
 		let matchingProduct;
+		let calldeliveryOption;
+		const takedeliveryID = cartItem.deliveryOptionID;
+
 		products.forEach((productItem) => {
 			if (productItem.id === callproductid) {
 				matchingProduct = productItem;
 			}
 		});
 
-		let calldeliveryOption;
-		const takedeliveryID = cartItem.deliveryOptionID;
 		deliveryOption.forEach((option) => {
 			if (option.idDelivery === takedeliveryID) {
 				calldeliveryOption = option;
@@ -102,46 +103,48 @@ export function renderOrderSummary() {
 	}
 
 	//------------------------------------------
-	//     Tombol Haput Product di CheckOut
+	//        Single Event Listener
 	//------------------------------------------
-	document.querySelectorAll(".js-delete-quantity-link").forEach((buttonDeleteProduct) => {
-		buttonDeleteProduct.addEventListener("click", () => {
-			const produckCheckOut = buttonDeleteProduct.dataset.idCheckout;
-			removeFromCart(produckCheckOut);
-			document.querySelector(`.js-cart-item-container-${produckCheckOut}`).remove();
-			const total = countingQuantity();
-			document.querySelector(".js-count-item").innerHTML = total + " items";
-		});
-	});
+	document.addEventListener("click", (event) => {
+		// Hapus Produk Checkout
+		const deleteBtn = event.target.closest(".js-delete-quantity-link");
+		if (deleteBtn) {
+			const productCheckOut = deleteBtn.dataset.idCheckout;
+			removeFromCart(productCheckOut);
+			document.querySelector(`.js-cart-item-container-${productCheckOut}`)?.remove();
+			updateTotalItems();
+			return;
+		}
 
-	//------------------------------------------
-	//          Tombol Update quantity
-	//------------------------------------------
-	document.querySelectorAll(".js-button-update").forEach((buttonUpdate) => {
-		buttonUpdate.addEventListener("click", () => {
-			changeStockQuantity(buttonUpdate);
-			const total = countingQuantity();
-			document.querySelector(".js-count-item").innerHTML = total + " items";
-		});
-	});
+		// Update Quantity
+		const updateBtn = event.target.closest(".js-button-update");
+		if (updateBtn) {
+			changeStockQuantity(updateBtn);
+			updateTotalItems();
+			return;
+		}
 
-	//------------------------------------------
-	//          Event Refres Page
-	//------------------------------------------
-	document.addEventListener("DOMContentLoaded", () => {
-		const total = countingQuantity();
-		document.querySelector(".js-count-item").innerHTML = total + " items";
-	});
+		// Update Delivery
+		const deliveryOption = event.target.closest(".js-delivery-option");
+		if (deliveryOption) {
+			const productID = deliveryOption.dataset.productId;
+			const deliveryOptionID = deliveryOption.dataset.deliveryOptionId;
 
-	//------------------------------------------
-	//          Tombol Update Delivery
-	//------------------------------------------
-	document.querySelectorAll(".js-delivery-option").forEach((element) => {
-		element.addEventListener("click", () => {
-			const productID = element.dataset.productId;
-			const deliveryOptionID = element.dataset.deliveryOptionId;
 			refrehUpdatedelivery(productID, deliveryOptionID);
 			renderOrderSummary();
-		});
+			return;
+		}
 	});
+
+	//        Event Saat Page Load
+	document.addEventListener("DOMContentLoaded", () => {
+		updateTotalItems();
+	});
+
+	//        Function Update Total Item
+	function updateTotalItems() {
+		const total = countingQuantity();
+		document.querySelector(".js-counting-quantity").innerHTML = `Items (${total})`;
+		document.querySelector(".js-count-item").innerHTML = total + " items";
+	}
 }
