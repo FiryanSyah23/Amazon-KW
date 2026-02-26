@@ -92,7 +92,7 @@ export function changeStockQuantity(buttonUpdate) {
 	const productId = buttonUpdate.dataset.quantityUpdate;
 	const container = document.querySelector(`.js-cart-item-container-${productId}`);
 	let input = container.querySelector(".input-update");
-	const numberQuantity = document.querySelector(".quantity-label");
+	const numberQuantity = container.querySelector(".quantity-label");
 	// MODE UPDATE → BUAT INPUT
 	if (buttonUpdate.textContent.trim() === "Update") {
 		buttonUpdate.textContent = "Save";

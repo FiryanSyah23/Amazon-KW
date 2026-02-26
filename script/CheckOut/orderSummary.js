@@ -1,34 +1,23 @@
 import { changeStockQuantity, countingQuantity, cart, removeFromCart, refrehUpdatedelivery } from "../../data/cart.js";
-import { products } from "../../data/products.js";
+import { getProductID } from "../../data/products.js";
 import { formatCurrency } from "../utils/money.js";
-import { deliveryOption } from "../../data/deliveryOption.js";
+import { deliveryOption, getIDDelivery } from "../../data/deliveryOption.js";
 import dayjs from "https://unpkg.com/dayjs@1.11.19/esm/index.js";
 import localeID from "https://unpkg.com/dayjs@1.11.19/esm/locale/id.js";
+import { renderPaymentSummary } from "../CheckOut/paymentSummary.js";
 
 //------------------------------------------
 //     fungsi panggil page CheckOut
 //------------------------------------------
 export function renderOrderSummary() {
 	dayjs.locale(localeID);
-
 	let cartSummaryHTML = "";
 	cart.forEach((cartItem) => {
 		const callproductid = cartItem.productID;
-		let matchingProduct;
-		let calldeliveryOption;
+		const matchingProduct = getProductID(callproductid);
 		const takedeliveryID = cartItem.deliveryOptionID;
 
-		products.forEach((productItem) => {
-			if (productItem.id === callproductid) {
-				matchingProduct = productItem;
-			}
-		});
-
-		deliveryOption.forEach((option) => {
-			if (option.idDelivery === takedeliveryID) {
-				calldeliveryOption = option;
-			}
-		});
+		const calldeliveryOption = getIDDelivery(takedeliveryID);
 
 		const today = dayjs();
 		const deliveryDate = today.add(calldeliveryOption.deliveryDays, "days");
@@ -101,50 +90,50 @@ export function renderOrderSummary() {
 
 		return deliveryOptionSummary;
 	}
+}
 
-	//------------------------------------------
-	//        Single Event Listener
-	//------------------------------------------
-	document.addEventListener("click", (event) => {
-		// Hapus Produk Checkout
-		const deleteBtn = event.target.closest(".js-delete-quantity-link");
-		if (deleteBtn) {
-			const productCheckOut = deleteBtn.dataset.idCheckout;
-			removeFromCart(productCheckOut);
-			document.querySelector(`.js-cart-item-container-${productCheckOut}`)?.remove();
-			updateTotalItems();
-			return;
-		}
-
-		// Update Quantity
-		const updateBtn = event.target.closest(".js-button-update");
-		if (updateBtn) {
-			changeStockQuantity(updateBtn);
-			updateTotalItems();
-			return;
-		}
-
-		// Update Delivery
-		const deliveryOption = event.target.closest(".js-delivery-option");
-		if (deliveryOption) {
-			const productID = deliveryOption.dataset.productId;
-			const deliveryOptionID = deliveryOption.dataset.deliveryOptionId;
-
-			refrehUpdatedelivery(productID, deliveryOptionID);
-			renderOrderSummary();
-			return;
-		}
-	});
-
-	//        Event Saat Page Load
-	document.addEventListener("DOMContentLoaded", () => {
+//------------------------------------------
+//        Single Event Listener
+//------------------------------------------
+document.addEventListener("click", (event) => {
+	// Hapus Produk Checkout
+	const deleteBtn = event.target.closest(".js-delete-quantity-link");
+	if (deleteBtn) {
+		const productCheckOut = deleteBtn.dataset.idCheckout;
+		removeFromCart(productCheckOut);
+		document.querySelector(`.js-cart-item-container-${productCheckOut}`)?.remove();
 		updateTotalItems();
-	});
-
-	//        Function Update Total Item
-	function updateTotalItems() {
-		const total = countingQuantity();
-		document.querySelector(".js-counting-quantity").innerHTML = `Items (${total})`;
-		document.querySelector(".js-count-item").innerHTML = total + " items";
+		return;
 	}
+
+	// Update Quantity
+	const updateBtn = event.target.closest(".js-button-update");
+	if (updateBtn) {
+		changeStockQuantity(updateBtn);
+		updateTotalItems();
+		return;
+	}
+
+	// Update Delivery
+	const deliveryOption = event.target.closest(".js-delivery-option");
+	if (deliveryOption) {
+		const productID = deliveryOption.dataset.productId;
+		const deliveryOptionID = deliveryOption.dataset.deliveryOptionId;
+		refrehUpdatedelivery(productID, deliveryOptionID);
+		updateTotalItems();
+		renderOrderSummary();
+		return;
+	}
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+	updateTotalItems();
+});
+
+//        Function Update Total Item
+function updateTotalItems() {
+	const total = countingQuantity();
+	renderPaymentSummary();
+	document.querySelector(".js-counting-quantity").innerHTML = `Items (${total})`;
+	document.querySelector(".js-count-item").innerHTML = total + " items";
 }
