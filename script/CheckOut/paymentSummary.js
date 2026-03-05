@@ -1,7 +1,7 @@
-import { cart, refrehUpdatedelivery } from "../../data/cart.js";
+import { cart } from "../../data/cart.js";
 import { getProductID, products } from "../../data/products.js";
 import { formatCurrency } from "../utils/money.js";
-import { deliveryOption, getIDDelivery } from "../../data/deliveryOption.js";
+import { getIDDelivery } from "../../data/deliveryOption.js";
 
 export function renderPaymentSummary() {
 	let paymentSummary = "";
@@ -9,10 +9,12 @@ export function renderPaymentSummary() {
 		const product = getProductID(item.productID);
 		return total + product.priceCents * item.quantity;
 	}, 0);
+    
 	const shipingPricecent = cart.reduce((akumulator, item) => {
 		const calldeliveryOption = getIDDelivery(item.deliveryOptionID);
 		return akumulator + calldeliveryOption.costDelivery;
 	}, 0);
+    
 	const totalBeforeTax = priceTotal + shipingPricecent;
 	const taxCent = totalBeforeTax * 0.1;
 	const totalProduct = totalBeforeTax + taxCent;
