@@ -1,20 +1,24 @@
 //------------------------------------------
 //  Tempat Simpan Object
 //------------------------------------------
-export let cart = JSON.parse(localStorage.getItem("cart"));
-if (!cart) {
-	cart = [
-		{
-			productID: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
-			quantity: 2,
-			deliveryOptionID: "1",
-		},
-		{
-			productID: "83d4ca15-0f35-48f5-b7a3-1ea210004f2e",
-			quantity: 1,
-			deliveryOptionID: "2",
-		},
-	];
+export let cart;
+loadFromStorage();
+export function loadFromStorage() {
+	cart = JSON.parse(localStorage.getItem("cart"));
+	if (!cart) {
+		cart = [
+			{
+				productID: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
+				quantity: 2,
+				deliveryOptionID: "1",
+			},
+			{
+				productID: "83d4ca15-0f35-48f5-b7a3-1ea210004f2e",
+				quantity: 1,
+				deliveryOptionID: "2",
+			},
+		];
+	}
 }
 
 function saveToStorage() {

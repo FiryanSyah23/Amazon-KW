@@ -55,9 +55,6 @@ function orderAmazonPage() {
 	});
 	document.querySelector(".js-product-grid").innerHTML = productListHTML;
 
-	//-------------------------------------
-	//     fungsi hitung jumlah barang
-	//-------------------------------------
 
 	document.querySelectorAll(".js-add-to-card").forEach((button) => {
 		button.addEventListener("click", () => {
