@@ -1,5 +1,5 @@
 //------------------------------------------
-//  Tempat Simpan Object
+//  Tempat Simpan Object CART
 //------------------------------------------
 export let cart;
 loadFromStorage();

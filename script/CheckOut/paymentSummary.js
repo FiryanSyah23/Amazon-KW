@@ -1,5 +1,5 @@
-import { cart } from "../../data/cart.js";
-import { getProductID, products } from "../../data/products.js";
+import { cart, countingQuantity } from "../../data/cart.js";
+import { getProductID } from "../../data/products.js";
 import { formatCurrency } from "../utils/money.js";
 import { getIDDelivery } from "../../data/deliveryOption.js";
 
@@ -9,15 +9,17 @@ export function renderPaymentSummary() {
 		const product = getProductID(item.productID);
 		return total + product.priceCents * item.quantity;
 	}, 0);
-    
+
 	const shipingPricecent = cart.reduce((akumulator, item) => {
 		const calldeliveryOption = getIDDelivery(item.deliveryOptionID);
 		return akumulator + calldeliveryOption.costDelivery;
 	}, 0);
-    
+
 	const totalBeforeTax = priceTotal + shipingPricecent;
 	const taxCent = totalBeforeTax * 0.1;
 	const totalProduct = totalBeforeTax + taxCent;
+
+	const total = countingQuantity();
 
 	paymentSummary += `
         <div class="payment-summary-title">
@@ -25,7 +27,7 @@ export function renderPaymentSummary() {
         </div>
         
         <div class="payment-summary-row">
-            <div class="js-counting-quantity"> :</div>
+            <div class="js-counting-quantity">Items (${total}) :</div>
             <div class="payment-summary-money">$${formatCurrency(priceTotal)}</div>
         </div>
         
@@ -54,5 +56,9 @@ export function renderPaymentSummary() {
         </button>
     `;
 
-	document.querySelector(".js-payment-summary").innerHTML = paymentSummary;
+	// ✅ HANYA GINI YANG DIPERLUKAN (dengan cek null)
+	const paymentSummaryElement = document.querySelector(".js-payment-summary");
+	if (paymentSummaryElement) {
+		paymentSummaryElement.innerHTML = paymentSummary;
+	}
 }

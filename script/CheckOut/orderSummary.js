@@ -24,7 +24,8 @@ export function renderOrderSummary() {
 		const dateString = deliveryDate.format("dddd, D MMMM");
 
 		cartSummaryHTML += `
-            <div class="cart-item-container js-cart-item-container-${matchingProduct.id}">
+            <div class="cart-item-container js-cart-container
+			js-cart-item-container-${matchingProduct.id}">
                 <div class="delivery-date">
                 Delivery date: ${dateString}
                 </div>
@@ -39,12 +40,12 @@ export function renderOrderSummary() {
                     <div class="product-price">
                     $${formatCurrency(matchingProduct.priceCents)}
                     </div>
-                    <div class="product-quantity">
+                    <div class="product-quantity js-product-quantity-${matchingProduct.id}">
                     <span>
                         Quantity: <span class="quantity-label">${cartItem.quantity}</span>
                     </span>
                     <span class="update-quantity-link link-primary js-button-update" data-quantity-update="${matchingProduct.id}">Update</span>
-                    <span class="delete-quantity-link link-primary js-delete-quantity-link" data-id-checkout="${matchingProduct.id}">
+                    <span class="delete-quantity-link link-primary js-delete-quantity-link js-delete-link-${matchingProduct.id}" data-id-checkout="${matchingProduct.id}">
                         Delete
                     </span>
                     </div>
@@ -133,7 +134,21 @@ document.addEventListener("DOMContentLoaded", () => {
 //        Function Update Total Item
 function updateTotalItems() {
 	const total = countingQuantity();
-	renderPaymentSummary();
-	document.querySelector(".js-counting-quantity").innerHTML = `Items (${total})`;
-	document.querySelector(".js-count-item").innerHTML = total + " items";
+
+	// ✅ Cek element ada dulu sebelum pakai
+	const countingElement = document.querySelector(".js-counting-quantity");
+	if (countingElement) {
+		countingElement.innerHTML = `Items (${total})`;
+	}
+
+	const countItemElement = document.querySelector(".js-count-item");
+	if (countItemElement) {
+		countItemElement.innerHTML = total + " items";
+	}
+
+	// Cek payment summary element juga
+	const paymentElement = document.querySelector(".js-payment-summary");
+	if (paymentElement) {
+		renderPaymentSummary();
+	}
 }
