@@ -23,7 +23,7 @@ function Cart(localStorageKey) {
 		},
 
 		saveToStorage() {
-			localStorage.setItem("cart-oop", JSON.stringify(this.cartItem));
+			localStorage.setItem(localStorageKey, JSON.stringify(this.cartItem));
 		},
 
 		//------------------------------------------
