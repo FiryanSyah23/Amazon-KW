@@ -1,6 +1,27 @@
-export function getProductID(callproductid) {
-	const matchingProduct = products.find((productItem) => productItem.id === callproductid);
+import { formatCurrency } from "../script/utils/money.js";
+
+export function getProductID(takeVariableID) {
+	const matchingProduct = products.find((productItem) => productItem.id === takeVariableID);
 	return matchingProduct;
+}
+
+class Product {
+	constructor(takeDataProducts) {
+		this.id = takeDataProducts.id;
+		this.image = takeDataProducts.image;
+		this.name = takeDataProducts.name;
+		this.rating = takeDataProducts.rating;
+		this.priceCents = takeDataProducts.priceCents;
+		this.keywords = takeDataProducts.keywords;
+	}
+
+	getStarsUrl() {
+		return `images/ratings/rating-${this.rating.stars * 10}.png`;
+	}
+
+	getPrice() {
+		return `$${formatCurrency(this.priceCents)}`;
+	}
 }
 
 export const products = [
@@ -474,4 +495,6 @@ export const products = [
 		priceCents: 2400,
 		keywords: ["sweaters", "hoodies", "apparel", "mens"],
 	},
-];
+].map((takeDataProducts) => {
+	return new Product(takeDataProducts);
+});

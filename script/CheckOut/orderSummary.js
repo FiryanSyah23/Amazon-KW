@@ -13,8 +13,8 @@ export function renderOrderSummary() {
 	dayjs.locale(localeID);
 	let cartSummaryHTML = "";
 	cart.forEach((cartItem) => {
-		const callproductid = cartItem.productID;
-		const matchingProduct = getProductID(callproductid);
+		const callCartID = cartItem.productID;
+		const matchingProduct = getProductID(callCartID);
 		const takedeliveryID = cartItem.deliveryOptionID;
 
 		const calldeliveryOption = getIDDelivery(takedeliveryID);
@@ -38,7 +38,7 @@ export function renderOrderSummary() {
                     ${matchingProduct.name}
                     </div>
                     <div class="product-price">
-                    $${formatCurrency(matchingProduct.priceCents)}
+					${matchingProduct.getPrice()}
                     </div>
                     <div class="product-quantity js-product-quantity-${matchingProduct.id}">
                     <span>
