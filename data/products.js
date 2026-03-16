@@ -23,8 +23,8 @@ class Product {
 		return `$${formatCurrency(this.priceCents)}`;
 	}
 
-	extraInfoHTML(){
-		return ""
+	extraInfoHTML() {
+		return "";
 	}
 }
 
