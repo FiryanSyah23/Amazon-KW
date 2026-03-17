@@ -1,12 +1,15 @@
 // import { cart as myCart} from "../data/cart.js";
 import { countingQuantity, addtocart } from "../data/cart.js";
-import { products } from "../data/products.js";
+import { products, loadProduct } from "../data/products.js";
 
-function orderAmazonPage() {
-	let productListHTML = "";
+loadProduct(renderProductGrid);
 
-	products.forEach((product) => {
-		productListHTML += `
+function renderProductGrid() {
+	function orderAmazonPage() {
+		let productListHTML = "";
+
+		products.forEach((product) => {
+			productListHTML += `
             <div class="product-container">
                 <div class="producd-image-container">
                 <img class="product-image" src="${product.image}">
@@ -54,28 +57,29 @@ function orderAmazonPage() {
                 </button>
             </div>
         `;
-	});
-	document.querySelector(".js-product-grid").innerHTML = productListHTML;
-
-	document.querySelectorAll(".js-add-to-card").forEach((button) => {
-		button.addEventListener("click", () => {
-			const addValueID = button.dataset.productId;
-			const header = button.closest(".product-container");
-			const select = header.querySelector(".js-product-quantity-container");
-			const quantity = Number(select.value);
-
-			addtocart(addValueID, quantity);
-			const total = countingQuantity();
-			document.querySelector(".js-cart-quantity").innerHTML = total;
 		});
-	});
+		document.querySelector(".js-product-grid").innerHTML = productListHTML;
 
-	document.addEventListener("DOMContentLoaded", () => {
-		let productQuantity = JSON.parse(localStorage.getItem("countProduct"));
-		const total = countingQuantity();
-		productQuantity === 0 ? "" : (document.querySelector(".js-cart-quantity").innerHTML = total);
-		orderAmazonPage();
-	});
+		document.querySelectorAll(".js-add-to-card").forEach((button) => {
+			button.addEventListener("click", () => {
+				const addValueID = button.dataset.productId;
+				const header = button.closest(".product-container");
+				const select = header.querySelector(".js-product-quantity-container");
+				const quantity = Number(select.value);
+
+				addtocart(addValueID, quantity);
+				const total = countingQuantity();
+				document.querySelector(".js-cart-quantity").innerHTML = total;
+			});
+		});
+
+		document.addEventListener("DOMContentLoaded", () => {
+			let productQuantity = JSON.parse(localStorage.getItem("countProduct"));
+			const total = countingQuantity();
+			productQuantity === 0 ? "" : (document.querySelector(".js-cart-quantity").innerHTML = total);
+			orderAmazonPage();
+		});
+	}
+
+	orderAmazonPage();
 }
-
-orderAmazonPage();
