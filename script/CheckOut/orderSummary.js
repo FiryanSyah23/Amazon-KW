@@ -127,7 +127,7 @@ document.addEventListener("click", (event) => {
 	}
 });
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("load", () => {
 	updateTotalItems();
 });
 

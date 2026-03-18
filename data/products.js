@@ -52,7 +52,6 @@ export function loadProduct(fun) {
 			}
 			return new Product(takeDataProducts);
 		});
-
 		console.log("load Product");
 		fun();
 	});
@@ -60,7 +59,6 @@ export function loadProduct(fun) {
 	xhrp.open("GET", "https://supersimplebackend.dev/products");
 	xhrp.send();
 }
-loadProduct();
 
 // export const products = [
 // 	{

@@ -1,7 +1,14 @@
 import { renderOrderSummary } from "../../script/CheckOut/orderSummary.js";
 import { loadFromStorage, cart } from "../../data/cart.js";
+import { loadProduct } from "../../data/products.js";
 
 describe("Test suite: OrderSummary", () => {
+	beforeAll((done) => {
+		loadProduct(() => {
+			done();
+		});
+	});
+
 	beforeEach(() => {
 		// ✅ Setup HTML dengan SEMUA element yang dibutuhkan
 		document.querySelector(".js-test-container").innerHTML = `
