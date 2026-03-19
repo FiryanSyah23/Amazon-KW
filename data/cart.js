@@ -128,3 +128,13 @@ export function changeStockQuantity(buttonUpdate) {
 		numberQuantity.style.display = "inline";
 	}
 }
+
+export function loadCart(fun) {
+	const xhrp = new XMLHttpRequest();
+	xhrp.addEventListener("load", () => {
+		console.log(xhrp.response);
+		fun();
+	});
+	xhrp.open("GET", "https://supersimplebackend.dev/cart");
+	xhrp.send();
+}
