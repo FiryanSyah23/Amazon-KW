@@ -1,10 +1,10 @@
 import { renderOrderSummary } from "../../script/CheckOut/orderSummary.js";
 import { loadFromStorage, cart } from "../../data/cart.js";
-import { loadProduct } from "../../data/products.js";
+import { loadProductFetch } from "../../data/products.js";
 
 describe("Test suite: OrderSummary", () => {
 	beforeAll((done) => {
-		loadProduct(() => {
+		loadProductFetch().then(() => {
 			done();
 		});
 	});

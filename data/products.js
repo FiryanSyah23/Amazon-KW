@@ -43,6 +43,27 @@ class Clotings extends Product {
 
 export let products = [];
 
+export function loadProductFetch() {
+	const promise = fetch("https://supersimplebackend.dev/products")
+		.then((response) => {
+			return response.json();
+		})
+		.then((dataProduct) => {
+			products = dataProduct.map((takeDataProducts) => {
+				if (takeDataProducts.type === "clothing") {
+					return new Clotings(takeDataProducts);
+				}
+				return new Product(takeDataProducts);
+			});
+			console.log("load Product");
+		});
+
+	return promise;
+}
+// loadProductFetch().then(() => {
+// 	console.log("next step");
+// });
+
 export function loadProduct(fun) {
 	const xhrp = new XMLHttpRequest();
 	xhrp.addEventListener("load", () => {
@@ -59,7 +80,6 @@ export function loadProduct(fun) {
 	xhrp.open("GET", "https://supersimplebackend.dev/products");
 	xhrp.send();
 }
-
 
 // export const products = [
 // 	{
