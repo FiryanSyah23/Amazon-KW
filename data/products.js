@@ -56,7 +56,7 @@ export function loadProductFetch(fun) {
 				return new Product(takeDataProducts);
 			});
 			console.log("load Product");
-			fun();
+			if (fun) fun(); // ✅ hanya panggil kalau ada callback
 		});
 
 	return promise;
