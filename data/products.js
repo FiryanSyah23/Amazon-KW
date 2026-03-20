@@ -43,7 +43,7 @@ class Clotings extends Product {
 
 export let products = [];
 
-export function loadProductFetch() {
+export function loadProductFetch(fun) {
 	const promise = fetch("https://supersimplebackend.dev/products")
 		.then((response) => {
 			return response.json();
@@ -56,6 +56,7 @@ export function loadProductFetch() {
 				return new Product(takeDataProducts);
 			});
 			console.log("load Product");
+			fun();
 		});
 
 	return promise;
@@ -64,22 +65,22 @@ export function loadProductFetch() {
 // 	console.log("next step");
 // });
 
-export function loadProduct(fun) {
-	const xhrp = new XMLHttpRequest();
-	xhrp.addEventListener("load", () => {
-		products = JSON.parse(xhrp.response).map((takeDataProducts) => {
-			if (takeDataProducts.type === "clothing") {
-				return new Clotings(takeDataProducts);
-			}
-			return new Product(takeDataProducts);
-		});
-		console.log("load Product");
-		fun();
-	});
+// export function loadProduct(fun) {
+// 	const xhrp = new XMLHttpRequest();
+// 	xhrp.addEventListener("load", () => {
+// 		products = JSON.parse(xhrp.response).map((takeDataProducts) => {
+// 			if (takeDataProducts.type === "clothing") {
+// 				return new Clotings(takeDataProducts);
+// 			}
+// 			return new Product(takeDataProducts);
+// 		});
+// 		console.log("load Product");
+// 		fun();
+// 	});
 
-	xhrp.open("GET", "https://supersimplebackend.dev/products");
-	xhrp.send();
-}
+// 	xhrp.open("GET", "https://supersimplebackend.dev/products");
+// 	xhrp.send();
+// }
 
 // export const products = [
 // 	{

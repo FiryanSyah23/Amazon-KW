@@ -1,8 +1,8 @@
 // import { cart as myCart} from "../data/cart.js";
 import { countingQuantity, addtocart } from "../data/cart.js";
-import { products, loadProduct } from "../data/products.js";
+import { products, loadProductFetch } from "../data/products.js";
 
-loadProduct(renderProductGrid);
+loadProductFetch(renderProductGrid);
 
 function renderProductGrid() {
 	function orderAmazonPage() {
@@ -73,12 +73,9 @@ function renderProductGrid() {
 			});
 		});
 
-		document.addEventListener("DOMContentLoaded", () => {
-			let productQuantity = JSON.parse(localStorage.getItem("countProduct"));
-			const total = countingQuantity();
-			productQuantity === 0 ? "" : (document.querySelector(".js-cart-quantity").innerHTML = total);
-			orderAmazonPage();
-		});
+		let productQuantity = JSON.parse(localStorage.getItem("countProduct"));
+		const total = countingQuantity();
+		productQuantity === 0 ? "" : (document.querySelector(".js-cart-quantity").innerHTML = total);
 	}
 
 	orderAmazonPage();

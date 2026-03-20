@@ -91,6 +91,7 @@ export function renderOrderSummary() {
 
 		return deliveryOptionSummary;
 	}
+	updateTotalItems();
 }
 
 //------------------------------------------
@@ -125,10 +126,6 @@ document.addEventListener("click", (event) => {
 		renderOrderSummary();
 		return;
 	}
-});
-
-document.addEventListener("load", () => {
-	updateTotalItems();
 });
 
 //        Function Update Total Item
