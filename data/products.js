@@ -57,10 +57,17 @@ export function loadProductFetch(fun) {
 			});
 			console.log("load Product");
 			if (fun) fun(); // ✅ hanya panggil kalau ada callback
+		})
+		.catch(() => {
+			console.log("Unexpected Error. Pleas Try Again Later");
 		});
 
+	// promise.addEventListener("error", (error) => {
+	// 	console.log("Unexpected Error. Pleas Try Again Later");
+	// });
 	return promise;
 }
+
 // loadProductFetch().then(() => {
 // 	console.log("next step");
 // });
