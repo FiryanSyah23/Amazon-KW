@@ -2,6 +2,7 @@ import { cart, countingQuantity } from "../../data/cart.js";
 import { getProductID } from "../../data/products.js";
 import { formatCurrency } from "../utils/money.js";
 import { getIDDelivery } from "../../data/deliveryOption.js";
+import { addOrders } from "../../data/orders.js";
 
 export function renderPaymentSummary() {
 	let paymentSummary = "";
@@ -51,14 +52,38 @@ export function renderPaymentSummary() {
             <div class="payment-summary-money">$${formatCurrency(totalProduct)}</div>
         </div>
         
-        <button class="place-order-button button-primary">
+        <button class="place-order-button button-primary js-place-order">
             Place your order
         </button>
     `;
 
-	// ✅ HANYA GINI YANG DIPERLUKAN (dengan cek null)
 	const paymentSummaryElement = document.querySelector(".js-payment-summary");
 	if (paymentSummaryElement) {
 		paymentSummaryElement.innerHTML = paymentSummary;
 	}
+
+	document.querySelector(".js-place-order").addEventListener("click", async () => {
+		try {
+			const cartForServer = cart.map((item) => ({
+				productId: item.productID, // productID → productId
+				quantity: item.quantity,
+				deliveryOptionId: item.deliveryOptionID, // opsional, tapi konsisten
+			}));
+
+			const response = await fetch("https://supersimplebackend.dev/orders", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({ cart: cartForServer }),
+			});
+
+			const order = await response.json();
+			addOrders(order);
+		} catch (error) {
+			console.log("unexpect error, try again leter");
+		}
+
+		// window.location.href ='orders.html'
+	});
 }
