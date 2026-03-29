@@ -65,9 +65,9 @@ export function renderPaymentSummary() {
 	document.querySelector(".js-place-order").addEventListener("click", async () => {
 		try {
 			const cartForServer = cart.map((item) => ({
-				productId: item.productID, // productID → productId
+				productId: item.productID,
 				quantity: item.quantity,
-				deliveryOptionId: item.deliveryOptionID, // opsional, tapi konsisten
+				deliveryOptionId: item.deliveryOptionID,
 			}));
 
 			const response = await fetch("https://supersimplebackend.dev/orders", {
@@ -79,11 +79,24 @@ export function renderPaymentSummary() {
 			});
 
 			const order = await response.json();
-			addOrders(order);
+			/**
+			 * buat tambah object baru ke server 
+				const orderWithDelivery = {
+					...order,
+					products: order.products.map((product) => {
+						const cartItem = cart.find((item) => item.productID === product.productId);
+						return {
+							...product,
+							deliveryOptionId: cartItem ? cartItem.deliveryOptionID : null,
+						};
+					}),
+				};
+			 */
+			addOrders(order); // ✅
 		} catch (error) {
 			console.log("unexpect error, try again leter");
 		}
 
-		window.location.href ='orders.html'
+		window.location.href = "orders.html";
 	});
 }
