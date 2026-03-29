@@ -84,6 +84,6 @@ export function renderPaymentSummary() {
 			console.log("unexpect error, try again leter");
 		}
 
-		// window.location.href ='orders.html'
+		window.location.href ='orders.html'
 	});
 }
