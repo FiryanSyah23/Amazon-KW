@@ -3,14 +3,12 @@ import { getProductID } from "../../data/products.js";
 import { formatCurrency } from "../utils/money.js";
 import { deliveryOption, getIDDelivery } from "../../data/deliveryOption.js";
 import dayjs from "https://unpkg.com/dayjs@1.11.19/esm/index.js";
-import localeID from "https://unpkg.com/dayjs@1.11.19/esm/locale/id.js";
 import { renderPaymentSummary } from "../CheckOut/paymentSummary.js";
 
 //------------------------------------------
 //     fungsi panggil page CheckOut
 //------------------------------------------
 export function renderOrderSummary() {
-	dayjs.locale(localeID);
 	let cartSummaryHTML = "";
 	cart.forEach((cartItem) => {
 		const callCartID = cartItem.productID;
