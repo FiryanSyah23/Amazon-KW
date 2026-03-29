@@ -93,10 +93,10 @@ export function renderPaymentSummary() {
 				};
 			 */
 			addOrders(order); // ✅
+			window.location.href = "orders.html";
 		} catch (error) {
 			console.log("unexpect error, try again leter");
 		}
 
-		window.location.href = "orders.html";
 	});
 }
